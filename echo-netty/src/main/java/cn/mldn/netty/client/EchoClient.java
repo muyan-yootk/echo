@@ -10,8 +10,6 @@ import io.netty.channel.EventLoopGroup;
 import io.netty.channel.nio.NioEventLoopGroup;
 import io.netty.channel.socket.SocketChannel;
 import io.netty.channel.socket.nio.NioSocketChannel;
-import io.netty.util.concurrent.Future;
-import io.netty.util.concurrent.GenericFutureListener;
 
 public class EchoClient {
     public void run() throws Exception {
@@ -29,14 +27,6 @@ public class EchoClient {
                         }
                     });
             ChannelFuture channelFuture = client.connect(HostInfo.HOST_NAME, HostInfo.PORT).sync();
-            channelFuture.addListener(new GenericFutureListener() {
-                @Override
-                public void operationComplete(Future future) throws Exception {
-                    if(future.isSuccess()) {
-                        System.out.println("服务器连接已经完成，可以确保进行消息的准确传输。");
-                    }
-                }
-            }) ;
             channelFuture.channel().closeFuture().sync() ; // 关闭连接
         } finally {
             group.shutdownGracefully();
