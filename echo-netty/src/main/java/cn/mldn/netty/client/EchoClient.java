@@ -2,7 +2,8 @@ package cn.mldn.netty.client;
 
 import cn.mldn.info.HostInfo;
 import cn.mldn.netty.client.handler.EchoClientHandler;
-import cn.mldn.netty.serious.MarshallingCodeFactory;
+import cn.mldn.netty.serious.JSONDecoder;
+import cn.mldn.netty.serious.JSONEncoder;
 import io.netty.bootstrap.Bootstrap;
 import io.netty.channel.ChannelFuture;
 import io.netty.channel.ChannelInitializer;
@@ -11,6 +12,8 @@ import io.netty.channel.EventLoopGroup;
 import io.netty.channel.nio.NioEventLoopGroup;
 import io.netty.channel.socket.SocketChannel;
 import io.netty.channel.socket.nio.NioSocketChannel;
+import io.netty.handler.codec.LengthFieldBasedFrameDecoder;
+import io.netty.handler.codec.LengthFieldPrepender;
 
 public class EchoClient {
     public void run() throws Exception {
@@ -24,13 +27,15 @@ public class EchoClient {
                     .handler(new ChannelInitializer<SocketChannel>() {
                         @Override
                         protected void initChannel(SocketChannel socketChannel) throws Exception {
-                            socketChannel.pipeline().addLast(MarshallingCodeFactory.buildMarshallingEncoder()) ;
-                            socketChannel.pipeline().addLast(MarshallingCodeFactory.buildMarshallingDecoder()) ;
+                            socketChannel.pipeline().addLast(new LengthFieldBasedFrameDecoder(65536, 0, 4, 0, 4));
+                            socketChannel.pipeline().addLast(new JSONDecoder());
+                            socketChannel.pipeline().addLast(new LengthFieldPrepender(4));
+                            socketChannel.pipeline().addLast(new JSONEncoder());
                             socketChannel.pipeline().addLast(new EchoClientHandler()); // 追加了处理器
                         }
                     });
             ChannelFuture channelFuture = client.connect(HostInfo.HOST_NAME, HostInfo.PORT).sync();
-            channelFuture.channel().closeFuture().sync() ; // 关闭连接
+            channelFuture.channel().closeFuture().sync(); // 关闭连接
         } finally {
             group.shutdownGracefully();
         }

@@ -56,3 +56,4 @@ Netty可以实现HTTP处理机制，但是Tomcat本身也是基于NIO的实现�
     netty本身直接支持有原生的 Java序列化操作，直接配置已有的程序类即可
     MessagePack：类似于JSON，但是要比JSON传输的更加小巧同时速度也快。它定义一个自己的压缩算法，例如：boolean只有true和false，但是有了MP就可以通过0和1描述了；
     Marshalling：使用JBoss实现的序列化处理操作，是基于传统的Java序列化的形式的一种升级。
+    JSON：是一种标准做法，但是JSON需要清楚的问题是传输体积要大，但是传输的信息明确，本次使用FastJSON操作
