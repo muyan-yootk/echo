@@ -1,10 +1,7 @@
 package cn.mldn.netty.client.handler;
 
-import io.netty.buffer.ByteBuf;
-import io.netty.buffer.Unpooled;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.ChannelInboundHandlerAdapter;
-import io.netty.util.CharsetUtil;
 import io.netty.util.ReferenceCountUtil;
 
 /**
@@ -16,10 +13,7 @@ public class EchoClientHandler extends ChannelInboundHandlerAdapter {
     @Override
     public void channelActive(ChannelHandlerContext ctx) throws Exception {
         for (int x = 0; x < REPEAT; x++) {  // 消息重复发送
-            byte data [] = ("【" + x + "】Hello World" + System.getProperty("line.separator")).getBytes() ;
-            ByteBuf buf = Unpooled.buffer(data.length) ;
-            buf.writeBytes(data) ;
-            ctx.writeAndFlush(buf);
+            ctx.writeAndFlush("【" + x + "】Hello World" + System.getProperty("line.separator"));
         }
     }
 
@@ -27,8 +21,7 @@ public class EchoClientHandler extends ChannelInboundHandlerAdapter {
     public void channelRead(ChannelHandlerContext ctx, Object msg) throws Exception {
         // 只要服务器端发送完成信息之后，都会执行此方法进行内容的输出操作
         try {
-            ByteBuf readBuf = (ByteBuf) msg;
-            String readData = readBuf.toString(CharsetUtil.UTF_8).trim(); // 接收返回数据内容
+            String readData = msg.toString().trim(); // 接收返回数据内容
             System.out.println(readData); // 输出服务器端的响应内容
         } finally {
             ReferenceCountUtil.release(msg); // 释放缓存
