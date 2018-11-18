@@ -1,6 +1,6 @@
 package cn.mldn.netty.client.handler;
 
-import cn.mldn.info.HostInfo;
+import cn.mldn.vo.Member;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.ChannelInboundHandlerAdapter;
 import io.netty.util.ReferenceCountUtil;
@@ -13,17 +13,20 @@ public class EchoClientHandler extends ChannelInboundHandlerAdapter {
 
     @Override
     public void channelActive(ChannelHandlerContext ctx) throws Exception {
-        for (int x = 0; x < REPEAT; x++) {  // 消息重复发送
-            ctx.writeAndFlush("【" + x + "】Hello World" + HostInfo.SEPARATOR);
-        }
+        Member member = new Member();   // 现在直接进行对象的发送
+        member.setMid("xiaoli");
+        member.setName("小李老师");
+        member.setAge(16);
+        member.setSalary(1.1);
+        ctx.writeAndFlush(member) ; // 直接进行对象实例发送
     }
 
     @Override
     public void channelRead(ChannelHandlerContext ctx, Object msg) throws Exception {
         // 只要服务器端发送完成信息之后，都会执行此方法进行内容的输出操作
         try {
-            String readData = msg.toString().trim(); // 接收返回数据内容
-            System.out.println(readData); // 输出服务器端的响应内容
+            Member member = (Member) msg ;
+            System.out.println(member); // 输出服务器端的响应内容
         } finally {
             ReferenceCountUtil.release(msg); // 释放缓存
         }

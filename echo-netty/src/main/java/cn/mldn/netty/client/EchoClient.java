@@ -3,8 +3,6 @@ package cn.mldn.netty.client;
 import cn.mldn.info.HostInfo;
 import cn.mldn.netty.client.handler.EchoClientHandler;
 import io.netty.bootstrap.Bootstrap;
-import io.netty.buffer.ByteBuf;
-import io.netty.buffer.Unpooled;
 import io.netty.channel.ChannelFuture;
 import io.netty.channel.ChannelInitializer;
 import io.netty.channel.ChannelOption;
@@ -12,11 +10,9 @@ import io.netty.channel.EventLoopGroup;
 import io.netty.channel.nio.NioEventLoopGroup;
 import io.netty.channel.socket.SocketChannel;
 import io.netty.channel.socket.nio.NioSocketChannel;
-import io.netty.handler.codec.DelimiterBasedFrameDecoder;
-import io.netty.handler.codec.FixedLengthFrameDecoder;
-import io.netty.handler.codec.string.StringDecoder;
-import io.netty.handler.codec.string.StringEncoder;
-import io.netty.util.CharsetUtil;
+import io.netty.handler.codec.serialization.ClassResolvers;
+import io.netty.handler.codec.serialization.ObjectDecoder;
+import io.netty.handler.codec.serialization.ObjectEncoder;
 
 public class EchoClient {
     public void run() throws Exception {
@@ -30,12 +26,8 @@ public class EchoClient {
                     .handler(new ChannelInitializer<SocketChannel>() {
                         @Override
                         protected void initChannel(SocketChannel socketChannel) throws Exception {
-                            ByteBuf delimiter = Unpooled.copiedBuffer(HostInfo.SEPARATOR.getBytes()) ;
-                            socketChannel.pipeline().addLast(new FixedLengthFrameDecoder(100)) ;
-//                            socketChannel.pipeline().addLast(new LineBasedFrameDecoder(1024)) ;
-                            socketChannel.pipeline().addLast(new DelimiterBasedFrameDecoder(1024,delimiter)) ;
-                            socketChannel.pipeline().addLast(new StringEncoder(CharsetUtil.UTF_8)) ;
-                            socketChannel.pipeline().addLast(new StringDecoder(CharsetUtil.UTF_8)) ;
+                            socketChannel.pipeline().addLast(new ObjectDecoder(ClassResolvers.cacheDisabled((this.getClass().getClassLoader())))) ;
+                            socketChannel.pipeline().addLast(new ObjectEncoder()) ;
                             socketChannel.pipeline().addLast(new EchoClientHandler()); // 追加了处理器
                         }
                     });

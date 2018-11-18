@@ -52,3 +52,4 @@ Netty可以实现HTTP处理机制，但是Tomcat本身也是基于NIO的实现�
     C、使用定长信息；
 3、Netty解决拆包与粘包问题的关键在于使用了分割器的模式来进行数据的拆分。
 4、Netty默认分隔符是系统提供的分隔符常亮，需要考虑分隔符的定义问题。
+5、序列化管理操作：Java原生实现（性能比较差）、JSON（Restful）、MessagePack、Marshalling、AVRO、....
