@@ -22,7 +22,7 @@ public class EchoServerHandler extends ChannelInboundHandlerAdapter {
             // 在进行数据类型转换的过程之中还可以进行编码指定（NIO的封装）
             String inputData = buf.toString(CharsetUtil.UTF_8);    // 将字节缓冲区的内容转为字符串
             System.err.println("{服务器}" + inputData);
-            String echoData = "【ECHO】" + inputData; // 数据的回应处理
+            String echoData = "【ECHO】" + inputData + System.getProperty("line.separator"); // 数据的回应处理
             byte[] data = echoData.getBytes(); // 将字符串变为字节数组
             ByteBuf echoBuf = Unpooled.buffer(data.length);
             echoBuf.writeBytes(data);// 将内容保存在缓存之中

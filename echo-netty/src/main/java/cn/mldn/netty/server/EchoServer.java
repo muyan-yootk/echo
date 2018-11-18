@@ -10,6 +10,7 @@ import io.netty.channel.EventLoopGroup;
 import io.netty.channel.nio.NioEventLoopGroup;
 import io.netty.channel.socket.SocketChannel;
 import io.netty.channel.socket.nio.NioServerSocketChannel;
+import io.netty.handler.codec.LineBasedFrameDecoder;
 
 /**
  * 实现了基础的线程池与网络连接的配置项
@@ -30,6 +31,7 @@ public class EchoServer {
             serverBootstrap.childHandler(new ChannelInitializer<SocketChannel>() {
                 @Override
                 protected void initChannel(SocketChannel socketChannel) throws Exception {
+                    socketChannel.pipeline().addLast(new LineBasedFrameDecoder(1024)) ;
                     socketChannel.pipeline().addLast(new EchoServerHandler()); // 追加了处理器
                 }
             });
