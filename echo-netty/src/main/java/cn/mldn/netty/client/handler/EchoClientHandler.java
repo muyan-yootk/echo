@@ -1,5 +1,6 @@
 package cn.mldn.netty.client.handler;
 
+import cn.mldn.info.HostInfo;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.ChannelInboundHandlerAdapter;
 import io.netty.util.ReferenceCountUtil;
@@ -13,7 +14,7 @@ public class EchoClientHandler extends ChannelInboundHandlerAdapter {
     @Override
     public void channelActive(ChannelHandlerContext ctx) throws Exception {
         for (int x = 0; x < REPEAT; x++) {  // 消息重复发送
-            ctx.writeAndFlush("【" + x + "】Hello World" + System.getProperty("line.separator"));
+            ctx.writeAndFlush("【" + x + "】Hello World" + HostInfo.SEPARATOR);
         }
     }
 
