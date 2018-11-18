@@ -1,9 +1,6 @@
 package cn.mldn.vo;
 
-import org.msgpack.annotation.Message;
-
 import java.io.Serializable;
-@Message
 public class Member implements Serializable {
     private String mid ;
     private String name ;

@@ -9,7 +9,7 @@
     </parent>
     <modelVersion>4.0.0</modelVersion>
 
-    <artifactId>netty-tcp</artifactId>
+    <artifactId>echo-netty</artifactId>
 
     <packaging>jar</packaging>
     <dependencies>
@@ -27,8 +27,12 @@
             <scope>test</scope>
         </dependency>
         <dependency>
-            <groupId>org.msgpack</groupId>
-            <artifactId>msgpack</artifactId>
+            <groupId>org.jboss.marshalling</groupId>
+            <artifactId>jboss-marshalling</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.jboss.marshalling</groupId>
+            <artifactId>jboss-marshalling-serial</artifactId>
         </dependency>
     </dependencies>
 </project>
