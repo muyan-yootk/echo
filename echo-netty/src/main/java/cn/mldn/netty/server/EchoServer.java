@@ -1,6 +1,8 @@
 package cn.mldn.netty.server;
 
 import cn.mldn.info.HostInfo;
+import cn.mldn.netty.serious.MessagePackDecoder;
+import cn.mldn.netty.serious.MessagePackEncoder;
 import cn.mldn.netty.server.handler.EchoServerHandler;
 import io.netty.bootstrap.ServerBootstrap;
 import io.netty.channel.ChannelFuture;
@@ -10,9 +12,8 @@ import io.netty.channel.EventLoopGroup;
 import io.netty.channel.nio.NioEventLoopGroup;
 import io.netty.channel.socket.SocketChannel;
 import io.netty.channel.socket.nio.NioServerSocketChannel;
-import io.netty.handler.codec.serialization.ClassResolvers;
-import io.netty.handler.codec.serialization.ObjectDecoder;
-import io.netty.handler.codec.serialization.ObjectEncoder;
+import io.netty.handler.codec.LengthFieldBasedFrameDecoder;
+import io.netty.handler.codec.LengthFieldPrepender;
 
 /**
  * 实现了基础的线程池与网络连接的配置项
@@ -33,8 +34,10 @@ public class EchoServer {
             serverBootstrap.childHandler(new ChannelInitializer<SocketChannel>() {
                 @Override
                 protected void initChannel(SocketChannel socketChannel) throws Exception {
-                    socketChannel.pipeline().addLast(new ObjectDecoder(ClassResolvers.cacheDisabled((this.getClass().getClassLoader())))) ;
-                    socketChannel.pipeline().addLast(new ObjectEncoder()) ;
+                    socketChannel.pipeline().addLast(new LengthFieldBasedFrameDecoder(65536,0,4,0,4)) ;
+                    socketChannel.pipeline().addLast(new MessagePackDecoder()) ;
+                    socketChannel.pipeline().addLast(new LengthFieldPrepender(4)) ; // 与属性个数保持一致
+                    socketChannel.pipeline().addLast(new MessagePackEncoder()) ;
                     socketChannel.pipeline().addLast(new EchoServerHandler()); // 追加了处理器
                 }
             });

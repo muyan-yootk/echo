@@ -14,6 +14,7 @@ public class EchoServerHandler extends ChannelInboundHandlerAdapter {
     @Override
     public void channelRead(ChannelHandlerContext ctx, Object msg) throws Exception {
         try {
+            System.out.println(msg.getClass() + " **************");
             Member member = (Member) msg ;
             System.err.println("{服务器}" + member);
             member.setName("【ECHO】" + member.getName());

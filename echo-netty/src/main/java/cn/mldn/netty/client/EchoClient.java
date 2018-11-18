@@ -2,6 +2,8 @@ package cn.mldn.netty.client;
 
 import cn.mldn.info.HostInfo;
 import cn.mldn.netty.client.handler.EchoClientHandler;
+import cn.mldn.netty.serious.MessagePackDecoder;
+import cn.mldn.netty.serious.MessagePackEncoder;
 import io.netty.bootstrap.Bootstrap;
 import io.netty.channel.ChannelFuture;
 import io.netty.channel.ChannelInitializer;
@@ -10,9 +12,8 @@ import io.netty.channel.EventLoopGroup;
 import io.netty.channel.nio.NioEventLoopGroup;
 import io.netty.channel.socket.SocketChannel;
 import io.netty.channel.socket.nio.NioSocketChannel;
-import io.netty.handler.codec.serialization.ClassResolvers;
-import io.netty.handler.codec.serialization.ObjectDecoder;
-import io.netty.handler.codec.serialization.ObjectEncoder;
+import io.netty.handler.codec.LengthFieldBasedFrameDecoder;
+import io.netty.handler.codec.LengthFieldPrepender;
 
 public class EchoClient {
     public void run() throws Exception {
@@ -26,8 +27,10 @@ public class EchoClient {
                     .handler(new ChannelInitializer<SocketChannel>() {
                         @Override
                         protected void initChannel(SocketChannel socketChannel) throws Exception {
-                            socketChannel.pipeline().addLast(new ObjectDecoder(ClassResolvers.cacheDisabled((this.getClass().getClassLoader())))) ;
-                            socketChannel.pipeline().addLast(new ObjectEncoder()) ;
+                            socketChannel.pipeline().addLast(new LengthFieldBasedFrameDecoder(65536,0,4,0,4)) ;
+                            socketChannel.pipeline().addLast(new MessagePackDecoder()) ;
+                            socketChannel.pipeline().addLast(new LengthFieldPrepender(4)) ; // 与属性个数保持一致
+                            socketChannel.pipeline().addLast(new MessagePackEncoder()) ;
                             socketChannel.pipeline().addLast(new EchoClientHandler()); // 追加了处理器
                         }
                     });
