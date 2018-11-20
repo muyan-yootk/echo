@@ -1,4 +1,4 @@
-package cn.mldn.netty.serious;
+package cn.mldn.http.server.serious;
 
 import cn.mldn.vo.Member;
 import com.alibaba.fastjson.JSON;

@@ -11,6 +11,7 @@
         <module>echo-base</module>
         <module>echo-util</module>
         <module>echo-netty</module>
+        <module>echo-http</module>
     </modules>
     <name>netty</name>
     <!-- FIXME change it to the project's website -->

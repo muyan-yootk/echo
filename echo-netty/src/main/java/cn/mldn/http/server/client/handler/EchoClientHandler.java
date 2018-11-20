@@ -1,4 +1,4 @@
-package cn.mldn.netty.client.handler;
+package cn.mldn.http.server.client.handler;
 
 import cn.mldn.vo.Member;
 import io.netty.channel.ChannelHandlerContext;

@@ -1,6 +1,6 @@
-package cn.mldn.netty.client.main;
+package cn.mldn.http.server.client.main;
 
-import cn.mldn.netty.client.EchoClient;
+import cn.mldn.http.server.client.EchoClient;
 
 public class EchoClientMain {
     public static void main(String[] args) throws Exception {

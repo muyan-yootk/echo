@@ -57,3 +57,25 @@ Netty可以实现HTTP处理机制，但是Tomcat本身也是基于NIO的实现�
     MessagePack：类似于JSON，但是要比JSON传输的更加小巧同时速度也快。它定义一个自己的压缩算法，例如：boolean只有true和false，但是有了MP就可以通过0和1描述了；
     Marshalling：使用JBoss实现的序列化处理操作，是基于传统的Java序列化的形式的一种升级。
     JSON：是一种标准做法，但是JSON需要清楚的问题是传输体积要大，但是传输的信息明确，本次使用FastJSON操作
+
+HTTP程序开发：
+    在进行WEB开发过程之中，HTTP是主要的通讯协议 ，但是你千万要记住一个问题，HTTP都是基于TCP协议的一种应用，HTTP是在TCP的基础上完善出来的。
+    TCP是一种可靠的连接协议，所以TCP的执行性能未必会高。据说google正在开发HTTP 3.0技术标准，并且这个技术里面将使用UDP协议作为HTTP基础协议 。
+
+HTTP里面存在有请求模式：
+    A、HTTP 1.0：GET、POST、HEAD
+    B、HTTP 1.1：OPTIONS、PUT、DELETE、TRACE、CONNECT
+    像Restful架构里面就认为这样的请求模式的区分操作非常的明智，但是从另外一个角度来讲，这样的操作实际上会非常麻烦，所以到了Spring实现的Restful架构的时候就不推荐这样的设计了。
+
+    HTTP在进行处理的时候操作分为两类数据内容：真实请求数据、头部信息（语言、浏览器内核、Cookie）。
+    
+在进行HTTP处理的时候还需要考虑到回应的操作问题：response里面给定的状态码。
+
+Netty可以实现HTTP协议开发，但是需要注意的是，在Netty之中服务器的开发需要考虑两种不同的状态：
+    处理请求：HttpRequest
+    处理数据：HttpContent
+
+
+
+
+

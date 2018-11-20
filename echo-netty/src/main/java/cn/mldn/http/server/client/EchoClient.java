@@ -1,9 +1,9 @@
-package cn.mldn.netty.client;
+package cn.mldn.http.server.client;
 
+import cn.mldn.http.server.client.handler.EchoClientHandler;
 import cn.mldn.info.HostInfo;
-import cn.mldn.netty.client.handler.EchoClientHandler;
-import cn.mldn.netty.serious.JSONDecoder;
-import cn.mldn.netty.serious.JSONEncoder;
+import cn.mldn.http.server.serious.JSONDecoder;
+import cn.mldn.http.server.serious.JSONEncoder;
 import io.netty.bootstrap.Bootstrap;
 import io.netty.channel.ChannelFuture;
 import io.netty.channel.ChannelInitializer;

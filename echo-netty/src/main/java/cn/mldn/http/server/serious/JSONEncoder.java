@@ -1,4 +1,4 @@
-package cn.mldn.netty.serious;
+package cn.mldn.http.server.serious;
 
 import com.alibaba.fastjson.JSONObject;
 import io.netty.buffer.ByteBuf;

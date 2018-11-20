@@ -1,9 +1,8 @@
-package cn.mldn.netty.server;
+package cn.mldn.http.server;
 
+
+import cn.mldn.http.server.handler.HttpServerHandler;
 import cn.mldn.info.HostInfo;
-import cn.mldn.netty.serious.JSONDecoder;
-import cn.mldn.netty.serious.JSONEncoder;
-import cn.mldn.netty.server.handler.EchoServerHandler;
 import io.netty.bootstrap.ServerBootstrap;
 import io.netty.channel.ChannelFuture;
 import io.netty.channel.ChannelInitializer;
@@ -12,14 +11,11 @@ import io.netty.channel.EventLoopGroup;
 import io.netty.channel.nio.NioEventLoopGroup;
 import io.netty.channel.socket.SocketChannel;
 import io.netty.channel.socket.nio.NioServerSocketChannel;
-import io.netty.handler.codec.LengthFieldBasedFrameDecoder;
-import io.netty.handler.codec.LengthFieldPrepender;
+import io.netty.handler.codec.http.HttpRequestDecoder;
+import io.netty.handler.codec.http.HttpResponseEncoder;
 
-/**
- * 实现了基础的线程池与网络连接的配置项
- */
-public class EchoServer {
-    public void run() throws Exception {    // 进行服务器端的启动处理
+public class HttpServer {
+    public void run() throws Exception {
         // 线程池是提升服务器性能的重要技术手段，利用定长的线程池可以保证核心线程的有效数量
         // 在Netty之中线程池的实现分为两类：主线程池（接收客户端连接）、工作线程池（处理客户端连接）
         EventLoopGroup bossGroup = new NioEventLoopGroup(10); // 创建接收线程池
@@ -34,11 +30,9 @@ public class EchoServer {
             serverBootstrap.childHandler(new ChannelInitializer<SocketChannel>() {
                 @Override
                 protected void initChannel(SocketChannel socketChannel) throws Exception {
-                    socketChannel.pipeline().addLast(new LengthFieldBasedFrameDecoder(65536,0,4,0,4)) ;
-                    socketChannel.pipeline().addLast(new JSONDecoder()) ;
-                    socketChannel.pipeline().addLast(new LengthFieldPrepender(4)) ;
-                    socketChannel.pipeline().addLast(new JSONEncoder()) ;
-                    socketChannel.pipeline().addLast(new EchoServerHandler()); // 追加了处理器
+                    socketChannel.pipeline().addLast(new HttpResponseEncoder()) ;   // 响应编码
+                    socketChannel.pipeline().addLast(new HttpRequestDecoder()) ;    // 请求解码
+                    socketChannel.pipeline().addLast(new HttpServerHandler()) ;
                 }
             });
             // 可以直接利用常亮进行TCP协议的相关配置

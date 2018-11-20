@@ -1,6 +1,6 @@
-package cn.mldn.netty.server.main;
+package cn.mldn.http.server.server.main;
 
-import cn.mldn.netty.server.EchoServer;
+import cn.mldn.http.server.server.EchoServer;
 
 public class EchoServerMain {
     public static void main(String[] args) throws Exception {
