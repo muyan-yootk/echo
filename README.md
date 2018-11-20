@@ -75,7 +75,8 @@ Netty可以实现HTTP协议开发，但是需要注意的是，在Netty之中服
     处理请求：HttpRequest
     处理数据：HttpContent
 
-
-
+处理Session与Cookie
+    服务器端应该进行session的统一管理，应该建立HttpSession的操作标准
+    需要设置保存在客户端的Sesson的Cookie名称。
 
 
