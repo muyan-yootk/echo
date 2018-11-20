@@ -13,8 +13,13 @@ import io.netty.channel.socket.SocketChannel;
 import io.netty.channel.socket.nio.NioServerSocketChannel;
 import io.netty.handler.codec.http.HttpRequestDecoder;
 import io.netty.handler.codec.http.HttpResponseEncoder;
+import io.netty.handler.codec.http.multipart.DiskFileUpload;
+import io.netty.handler.stream.ChunkedWriteHandler;
 
 public class HttpServer {
+    static {
+        DiskFileUpload.baseDirectory = System.getProperty("user.dir") + "/upload/" ;
+    }
     public void run() throws Exception {
         // 线程池是提升服务器性能的重要技术手段，利用定长的线程池可以保证核心线程的有效数量
         // 在Netty之中线程池的实现分为两类：主线程池（接收客户端连接）、工作线程池（处理客户端连接）
@@ -32,6 +37,7 @@ public class HttpServer {
                 protected void initChannel(SocketChannel socketChannel) throws Exception {
                     socketChannel.pipeline().addLast(new HttpResponseEncoder()) ;   // 响应编码
                     socketChannel.pipeline().addLast(new HttpRequestDecoder()) ;    // 请求解码
+                    socketChannel.pipeline().addLast(new ChunkedWriteHandler()) ; // 图片传输处理器
                     socketChannel.pipeline().addLast(new HttpServerHandler()) ;
                 }
             });
