@@ -78,5 +78,12 @@ Netty可以实现HTTP协议开发，但是需要注意的是，在Netty之中服
 处理Session与Cookie
     服务器端应该进行session的统一管理，应该建立HttpSession的操作标准
     需要设置保存在客户端的Sesson的Cookie名称。
+    
+HTTP客户端种类：
+    普通用户：浏览器；
+    正常开发者：HttpClient、Netty
+    数据流底层协议开发：Uri程序类完成处理。
+
+
 
 
